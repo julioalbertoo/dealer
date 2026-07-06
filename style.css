@@ -329,7 +329,7 @@ body{
   background:radial-gradient(circle at 30% 25%, #46613a, #33462a 75%);
   z-index:1;
 }
-.arbusto.ab1{ left:26%; bottom:26%; }
+.arbusto.ab1{ left:33%; bottom:26%; }
 .arbusto.ab2{ right:3%; bottom:15%; transform:scale(1.15); }
 .flores{
   position:absolute; width:70px; height:18px; z-index:2;
@@ -340,7 +340,7 @@ body{
     radial-gradient(circle, #c8687a 2.6px, transparent 3.2px) 95% 65%/10px 10px;
   background-repeat:no-repeat;
 }
-.flores.fl1{ left:22%; bottom:21%; }
+.flores.fl1{ left:35%; bottom:21%; }
 .flores.fl2{ left:58%; bottom:17%; }
 
 /* una paloma picoteando */
@@ -368,58 +368,127 @@ body{
 }
 
 /* el banco y tú */
-.banco{ position:absolute; left:6%; bottom:7%; width:180px; height:96px; z-index:2; }
+.banco{ position:absolute; left:5%; bottom:7%; width:230px; height:140px; z-index:2; }
 .banco::after{
-  content:""; position:absolute; left:-6px; right:-6px; bottom:-7px; height:12px;
+  content:""; position:absolute; left:-8px; right:-8px; bottom:-8px; height:14px;
   background:rgba(0,0,0,.28); border-radius:50%;
 }
 .banco .respaldo{
-  position:absolute; left:6px; right:6px; top:0; height:34px;
-  background:repeating-linear-gradient(0deg, #6b5136 0 7px, #55402a 7px 10px);
+  position:absolute; left:8px; right:8px; top:0; height:56px;
+  background:repeating-linear-gradient(0deg, #6b5136 0 9px, #55402a 9px 13px);
   border:3px solid #3a2c1e;
-  border-radius:6px 6px 0 0;
+  border-radius:8px 8px 0 0;
 }
 .banco .asiento{
-  position:absolute; left:0; right:0; top:40px; height:18px;
-  background:repeating-linear-gradient(90deg, #6b5136 0 22px, #55402a 22px 26px);
+  position:absolute; left:0; right:0; top:64px; height:20px;
+  background:repeating-linear-gradient(90deg, #6b5136 0 24px, #55402a 24px 28px);
   border:3px solid #3a2c1e;
   border-radius:4px;
 }
 .banco .pata{
-  position:absolute; top:58px; width:12px; height:34px;
+  position:absolute; top:84px; width:14px; height:52px;
   background:linear-gradient(90deg, #2a2624, #413a35);
   border-radius:0 0 4px 4px;
 }
-.banco .pata.p1{ left:12px; } .banco .pata.p2{ right:12px; }
+.banco .pata.p1{ left:16px; } .banco .pata.p2{ right:16px; }
 
-.tu{ position:absolute; left:56px; top:-46px; width:44px; height:70px; }
-.tu .tu-capucha{
-  position:absolute; top:-6px; left:0; width:40px; height:16px;
-  background:#41523e;
-  border-radius:14px 14px 4px 4px;
-  z-index:3;
+/* tú: el dealer, sentado con su sudadera y la capucha puesta */
+.tu{
+  --sudadera:#46523c;
+  --piel-tu:#b98d64;
+  --pantalon-tu:#3a3733;
+  position:absolute; left:36px; top:-38px;
+  width:120px; height:178px;
 }
-.tu .tu-cabeza{
-  position:absolute; top:0; left:7px; width:26px; height:24px;
-  background:#b98d64;
-  border-radius:5px;
+.tu .tu-arriba{
+  position:absolute; inset:0;
+  animation:respirar 3.8s ease-in-out infinite;
+}
+@keyframes respirar{
+  0%, 100%{ transform:translateY(0); }
+  50%{ transform:translateY(2px); }
+}
+.tu .tu-capucha{
+  position:absolute; top:-2px; left:16px; width:56px; height:48px;
+  background:linear-gradient(180deg, rgba(255,255,255,.1), transparent 45%, rgba(0,0,0,.2)), var(--sudadera);
+  border-radius:20px 20px 8px 8px;
   z-index:2;
 }
-.tu .tu-cabeza::before{
-  content:""; position:absolute; top:13px; right:5px;
-  width:4px; height:4px; background:#1c140e;
-  box-shadow:-9px 0 0 #1c140e;
+.tu .tu-cara{
+  position:absolute; top:8px; left:24px; width:40px; height:34px;
+  background:linear-gradient(180deg, rgba(0,0,0,.1), transparent 40%), var(--piel-tu);
+  border-radius:5px 5px 8px 8px;
+  z-index:3;
 }
-.tu .tu-cuerpo{
-  position:absolute; top:22px; left:0; width:40px; height:34px;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), transparent 40%, rgba(0,0,0,.18)), #41523e;
-  border-radius:8px 8px 4px 4px;
+.tu .tu-cara::before{ /* borde de la capucha sobre la frente */
+  content:""; position:absolute; top:-5px; left:-6px; right:-6px; height:10px;
+  background:var(--sudadera);
+  border-bottom:2px solid rgba(0,0,0,.3);
+  border-radius:6px 6px 2px 2px;
+}
+.tu .tu-ojo{
+  position:absolute; top:13px; width:6px; height:6px;
+  background:#181410; border-radius:2px;
+}
+.tu .tu-ojo::before{
+  content:""; position:absolute; top:1px; left:1px;
+  width:2px; height:2px; background:rgba(255,255,255,.7);
+}
+.tu .tu-ojo.a{ left:8px; } .tu .tu-ojo.b{ right:8px; }
+.tu .tu-boca{
+  position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+  width:12px; height:3px;
+  background:rgba(40,20,15,.55); border-radius:2px;
+}
+.tu .tu-torso{
+  position:absolute; top:38px; left:10px; width:64px; height:64px;
+  background:linear-gradient(180deg, rgba(255,255,255,.1), transparent 30%, rgba(0,0,0,.2)), var(--sudadera);
+  border-radius:14px 14px 4px 4px;
   z-index:1;
 }
-.tu .tu-cuerpo::after{
-  content:""; position:absolute; top:32px; left:4px; width:32px; height:12px;
-  background:#33302c; border-radius:3px; /* piernas sentadas */
+.tu .tu-cordon{
+  position:absolute; top:6px; width:3px; height:13px;
+  background:#cfc9b8; border-radius:2px;
 }
+.tu .tu-cordon.c1{ left:26px; } .tu .tu-cordon.c2{ left:35px; }
+.tu .tu-bolsillo{ /* bolsillo canguro */
+  position:absolute; bottom:6px; left:14px; width:36px; height:17px;
+  background:rgba(0,0,0,.2);
+  border:2px solid rgba(0,0,0,.25);
+  border-radius:4px 4px 8px 8px;
+}
+.tu .tu-brazo{
+  position:absolute; top:44px; width:13px; height:48px;
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.22)), var(--sudadera);
+  border-radius:6px;
+  z-index:2;
+}
+.tu .tu-brazo.b1{ left:2px; } .tu .tu-brazo.b2{ left:69px; }
+.tu .tu-brazo::after{ /* mano */
+  content:""; position:absolute; bottom:-8px; left:1px;
+  width:10px; height:10px; background:var(--piel-tu); border-radius:50%;
+}
+.tu .tu-muslo{
+  position:absolute; top:96px; left:24px; width:66px; height:20px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.15)), var(--pantalon-tu);
+  border-radius:4px 8px 4px 4px;
+}
+.tu .tu-pierna{
+  position:absolute; top:112px; width:20px; height:52px;
+  background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(0,0,0,.15)), var(--pantalon-tu);
+  border-radius:2px 2px 5px 5px;
+}
+.tu .tu-pierna.p1{ left:52px; } .tu .tu-pierna.p2{ left:74px; }
+.tu .tu-zapato{
+  position:absolute; top:162px; width:27px; height:14px;
+  background:#23201d;
+  border-radius:3px 9px 3px 3px;
+}
+.tu .tu-zapato::after{ /* suela */
+  content:""; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:rgba(255,255,255,.14);
+}
+.tu .tu-zapato.z1{ left:49px; } .tu .tu-zapato.z2{ left:71px; }
 
 /* ============ sprite del cliente ============ */
 #cliente-zona{
@@ -726,6 +795,7 @@ body{
   .titulo-logo{ font-size:26px; letter-spacing:2px; }
   #barra{ font-size:16px; flex-wrap:wrap; }
   #cliente-zona{ right:8%; transform:scale(.85); transform-origin:bottom; }
+  .banco{ transform:scale(.8); transform-origin:bottom left; }
   #dialogo{ height:100px; }
   #flash-poli{ font-size:20px; }
   .badge-subida{ right:10px; }
