@@ -225,16 +225,37 @@ function irManana() {
   pantalla('#s-manana');
 }
 
+/* El proveedor te prepara solo la cantidad que tiene sentido llevarse:
+   suficiente para los clientes que se esperan hoy, sin fundirte el
+   colchón que necesitas para los gastos de la noche. */
+function calcularCompraAuto() {
+  const coste = costeDosis(S.dia);
+  const objetivo = Math.max(0, D.clientes.length - S.stock);
+  if (objetivo === 0) return 0;
+  const colchon = 60;
+  let cant = Math.floor((S.dinero - colchon) / coste);
+  // si el colchón no deja ni un mínimo, tira de él: sin material no hay negocio
+  const minimo = Math.min(objetivo, 3);
+  if (cant < minimo) cant = Math.min(minimo, Math.floor(S.dinero / coste));
+  return Math.max(0, Math.min(objetivo, cant));
+}
+
 function renderCompra() {
   const coste = costeDosis(S.dia);
+  compraCant = calcularCompraAuto();
   $('#m-coste').textContent = eur(coste);
   $('#m-stock').textContent = `${S.stock} dosis`;
   $('#m-cantidad').textContent = compraCant;
   $('#m-total').textContent = eur(compraCant * coste);
   $('#m-dinero').textContent = eur(S.dinero - compraCant * coste);
   $('#m-deuda').textContent = eur(S.deuda);
-  $('#m-menos').disabled = compraCant <= 0;
-  $('#m-mas').disabled = (compraCant + 1) * coste > S.dinero;
+  if (compraCant > 0) {
+    $('#m-nota').textContent = 'Coges lo que da de sí la caja sin quedarte sin colchón para la noche.';
+  } else if (S.stock > 0) {
+    $('#m-nota').textContent = 'Hoy tiras del stock que ya tienes.';
+  } else {
+    $('#m-nota').textContent = 'No te llega ni para una dosis. Mal día para el negocio.';
+  }
   $('#b-salir-parque').textContent =
     (S.stock + compraCant) > 0 ? 'SALIR AL PARQUE →' : 'SALIR SIN MATERIAL →';
 }
@@ -303,8 +324,27 @@ function renderPaciencia() {
 
 function renderFicha() {
   $('#f-nombre').textContent = C.nombre;
-  $('#f-oferta').textContent = `Quiere 1 dosis · paga ${eur(C.precio)}`;
+  if (C.precio > C.oferta) {
+    $('#f-oferta').innerHTML =
+      `Quiere 1 dosis · paga <s class="precio-viejo">${C.oferta} €</s> <b class="precio-nuevo">${C.precio} €</b>`;
+  } else {
+    $('#f-oferta').innerHTML = `Quiere 1 dosis · paga <b class="precio-base">${C.precio} €</b>`;
+  }
   renderPaciencia();
+}
+
+/* marca de forma visible que el cliente ha aceptado pagar más */
+function marcarSubidaPrecio(delta) {
+  renderFicha();
+  const oferta = $('#f-oferta');
+  oferta.classList.remove('precio-sube');
+  void oferta.offsetWidth; // reinicia la animación
+  oferta.classList.add('precio-sube');
+  const badge = document.createElement('span');
+  badge.className = 'badge-subida';
+  badge.textContent = `+${delta} €`;
+  $('#ficha').appendChild(badge);
+  setTimeout(() => badge.remove(), 1500);
 }
 
 function renderSprite(c) {
@@ -396,6 +436,7 @@ function cerrarPasta() {
 }
 
 function accRegatear() {
+  const antes = C.precio;
   const nuevo = C.precio + 10;
   switch (C.tipo) {
     case 'poli':
@@ -431,7 +472,12 @@ function accRegatear() {
         narrar(pick(REGATEO.normal_rechaza), 'cliente-habla');
       }
   }
-  renderFicha();
+  if (C.precio > antes) {
+    narrar(`(Trato mejorado: ahora paga ${eur(C.precio)})`, 'bueno');
+    marcarSubidaPrecio(C.precio - antes);
+  } else {
+    renderFicha();
+  }
   gastarPaciencia();
 }
 
@@ -810,8 +856,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#b-empezar').addEventListener('click', empezar);
   $('#b-reiniciar').addEventListener('click', () => { mostrarRecord(); empezar(); });
 
-  $('#m-mas').addEventListener('click', () => { compraCant++; renderCompra(); });
-  $('#m-menos').addEventListener('click', () => { compraCant = Math.max(0, compraCant - 1); renderCompra(); });
   $('#b-salir-parque').addEventListener('click', irParque);
 
   $('#a-charlar').addEventListener('click', accCharlar);

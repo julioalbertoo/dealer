@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRAPICHEO — un juego de banco de parque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -44,12 +47,11 @@
           <span>Precio por dosis: <b id="m-coste"></b></span>
           <span>Stock actual: <b id="m-stock"></b></span>
         </div>
-        <div class="linea-compra selector">
-          <button id="m-menos" class="boton mini">−</button>
-          <span class="compra-num"><b id="m-cantidad">0</b> dosis</span>
-          <button id="m-mas" class="boton mini">+</button>
+        <div class="linea-compra compra-auto">
+          <span>Hoy te llevas: <b id="m-cantidad">0</b> dosis</span>
           <span class="compra-total">Total: <b id="m-total">0 €</b></span>
         </div>
+        <p id="m-nota" class="nota-compra"></p>
         <div class="linea-compra">
           <span>Dinero: <b id="m-dinero"></b></span>
           <span>Deuda: <b id="m-deuda" class="rojo"></b></span>
@@ -72,10 +74,21 @@
     <div id="escena">
       <div class="cielo"></div>
       <div class="sol"></div>
+      <div class="nube n1"></div>
+      <div class="nube n2"></div>
+      <div class="nube n3"></div>
+      <div class="skyline"></div>
       <div class="arbol a1"><div class="copa"></div><div class="tronco"></div></div>
       <div class="arbol a2"><div class="copa"></div><div class="tronco"></div></div>
+      <div class="arbol a3"><div class="copa"></div><div class="tronco"></div></div>
       <div class="farola"><div class="luz"></div><div class="poste"></div></div>
       <div class="suelo"></div>
+      <div class="camino"></div>
+      <div class="arbusto ab1"></div>
+      <div class="arbusto ab2"></div>
+      <div class="flores fl1"></div>
+      <div class="flores fl2"></div>
+      <div class="paloma"></div>
       <div class="banco">
         <div class="respaldo"></div>
         <div class="asiento"></div>
@@ -85,7 +98,11 @@
       <div id="cliente-zona">
         <div id="sprite" class="sprite oculto">
           <div class="sp-pelo"></div>
-          <div class="sp-cara"><div class="sp-ojo i"></div><div class="sp-ojo d"></div></div>
+          <div class="sp-cara">
+            <div class="sp-ojo i"></div><div class="sp-ojo d"></div>
+            <div class="sp-boca"></div>
+          </div>
+          <div class="sp-cuello"></div>
           <div class="sp-torso">
             <div class="sp-brazo i"></div><div class="sp-brazo d"></div>
           </div>
