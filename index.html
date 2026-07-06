@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRAPICHEO — un juego de banco de parque</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="juego">
+
+  <!-- ============ PANTALLA: TÍTULO ============ -->
+  <section id="s-titulo" class="pantalla activa">
+    <div class="titulo-caja">
+      <h1 class="titulo-logo">TRAPICHEO</h1>
+      <p class="titulo-sub">— gloria o ruina en un banco de parque —</p>
+      <div class="titulo-intro">
+        <p>Debes 500&nbsp;€ al proveedor y solo tienes un banco, un parque
+        y diez días para saldar la deuda.</p>
+        <p>Cada cliente que se acerque puede ser una venta...
+        o un yonki, un moroso, un ladrón, un dealer rival
+        o un <span class="rojo">policía de paisano</span>.</p>
+        <p>Examina su <b>aspecto</b>, su <b>lenguaje</b> y su <b>dinero</b>.
+        Y decide: ¿vendes o no vendes?</p>
+      </div>
+      <button id="b-empezar" class="boton grande">EMPEZAR</button>
+      <p id="titulo-record" class="titulo-record oculto"></p>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA: MAÑANA ============ -->
+  <section id="s-manana" class="pantalla">
+    <div class="panel-manana">
+      <h2 id="m-dia" class="cabecera-dia">DÍA 1</h2>
+      <div class="bloque rumores">
+        <h3>■ LO QUE SE OYE POR EL BARRIO</h3>
+        <ul id="m-rumores"></ul>
+      </div>
+      <div class="bloque compra">
+        <h3>■ EL PROVEEDOR</h3>
+        <p id="m-proveedor-frase" class="frase-prov"></p>
+        <div class="linea-compra">
+          <span>Precio por dosis: <b id="m-coste"></b></span>
+          <span>Stock actual: <b id="m-stock"></b></span>
+        </div>
+        <div class="linea-compra selector">
+          <button id="m-menos" class="boton mini">−</button>
+          <span class="compra-num"><b id="m-cantidad">0</b> dosis</span>
+          <button id="m-mas" class="boton mini">+</button>
+          <span class="compra-total">Total: <b id="m-total">0 €</b></span>
+        </div>
+        <div class="linea-compra">
+          <span>Dinero: <b id="m-dinero"></b></span>
+          <span>Deuda: <b id="m-deuda" class="rojo"></b></span>
+        </div>
+      </div>
+      <button id="b-salir-parque" class="boton grande">SALIR AL PARQUE →</button>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA: PARQUE ============ -->
+  <section id="s-parque" class="pantalla">
+    <header id="barra">
+      <span id="b-dia"></span>
+      <span id="b-dinero"></span>
+      <span id="b-stock"></span>
+      <span id="b-deuda"></span>
+      <span id="b-cliente"></span>
+    </header>
+
+    <div id="escena">
+      <div class="cielo"></div>
+      <div class="sol"></div>
+      <div class="arbol a1"><div class="copa"></div><div class="tronco"></div></div>
+      <div class="arbol a2"><div class="copa"></div><div class="tronco"></div></div>
+      <div class="farola"><div class="luz"></div><div class="poste"></div></div>
+      <div class="suelo"></div>
+      <div class="banco">
+        <div class="respaldo"></div>
+        <div class="asiento"></div>
+        <div class="pata p1"></div><div class="pata p2"></div>
+        <div class="tu"><div class="tu-cabeza"></div><div class="tu-cuerpo"></div><div class="tu-capucha"></div></div>
+      </div>
+      <div id="cliente-zona">
+        <div id="sprite" class="sprite oculto">
+          <div class="sp-pelo"></div>
+          <div class="sp-cara"><div class="sp-ojo i"></div><div class="sp-ojo d"></div></div>
+          <div class="sp-torso">
+            <div class="sp-brazo i"></div><div class="sp-brazo d"></div>
+          </div>
+          <div class="sp-pierna i"></div><div class="sp-pierna d"></div>
+          <div class="sp-zapato i"></div><div class="sp-zapato d"></div>
+          <div class="sp-acc"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel">
+      <div id="ficha">
+        <span id="f-nombre"></span>
+        <span id="f-oferta"></span>
+        <span id="f-paciencia" title="Paciencia del cliente"></span>
+      </div>
+      <div id="dialogo"></div>
+      <div id="acciones">
+        <button class="boton acc-b" id="a-charlar">💬 Charlar</button>
+        <button class="boton acc-b" id="a-observar">👁 Observar</button>
+        <button class="boton acc-b" id="a-pasta">💶 Ver la pasta</button>
+        <button class="boton acc-b" id="a-regatear">↑ Regatear</button>
+        <button class="boton vender" id="a-vender">✔ VENDER</button>
+        <button class="boton rechazar" id="a-rechazar">✘ RECHAZAR</button>
+      </div>
+      <div id="post-cliente" class="oculto">
+        <button class="boton grande" id="b-siguiente">SIGUIENTE →</button>
+      </div>
+    </div>
+
+    <!-- modal de billetes -->
+    <div id="modal-pasta" class="oculto">
+      <div class="modal-caja">
+        <h3>EL DINERO</h3>
+        <div id="billetes"></div>
+        <p id="pasta-desc"></p>
+        <button class="boton" id="b-cerrar-pasta">Devolver</button>
+      </div>
+    </div>
+
+    <!-- flash de redada -->
+    <div id="flash-poli" class="oculto"><span>¡ALTO! ¡POLICÍA!</span></div>
+  </section>
+
+  <!-- ============ PANTALLA: NOCHE ============ -->
+  <section id="s-noche" class="pantalla">
+    <div class="panel-noche">
+      <h2 id="n-titulo" class="cabecera-dia">FIN DEL DÍA 1</h2>
+      <div class="bloque">
+        <h3>■ RESUMEN DE LA JORNADA</h3>
+        <ul id="n-log"></ul>
+      </div>
+      <div class="bloque">
+        <h3>■ CUENTAS DE LA NOCHE</h3>
+        <ul id="n-gastos"></ul>
+        <div class="linea-compra">
+          <span>Dinero: <b id="n-dinero"></b></span>
+          <span>Deuda restante: <b id="n-deuda" class="rojo"></b></span>
+        </div>
+        <button id="b-amortizar" class="boton">Amortizar 50 € de deuda</button>
+      </div>
+      <button id="b-continuar" class="boton grande">DORMIR →</button>
+    </div>
+  </section>
+
+  <!-- ============ PANTALLA: FINAL ============ -->
+  <section id="s-final" class="pantalla">
+    <div class="panel-final">
+      <h2 id="fin-titulo"></h2>
+      <p id="fin-texto"></p>
+      <p id="fin-stats"></p>
+      <button id="b-reiniciar" class="boton grande">VOLVER A EMPEZAR</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
