@@ -146,6 +146,8 @@ body{
 .bloque li::before{ content:"› "; color:var(--acento); }
 .bloque li.gasto::before{ content:"− "; color:var(--rojo); }
 .bloque li.ingreso::before{ content:"+ "; color:var(--verde); }
+.bloque li.amortizacion{ color:var(--verde); }
+.bloque li.amortizacion::before{ content:"↓ "; color:var(--verde); }
 .frase-prov{ color:var(--texto-apagado); font-style:italic; margin-bottom:10px; font-size:19px; }
 .linea-compra{
   display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center;
@@ -161,7 +163,18 @@ body{
 .compra-total{ margin-left:auto; }
 .nota-compra{ color:var(--texto-apagado); font-size:18px; font-style:italic; }
 #b-salir-parque, #b-continuar{ align-self:center; }
-#b-amortizar{ margin-top:10px; }
+
+/* botón de música flotante */
+#b-musica{
+  position:absolute;
+  top:8px; right:10px;
+  z-index:60;
+  font-size:18px;
+  padding:4px 8px;
+  line-height:1;
+  opacity:.8;
+}
+#b-musica:hover{ opacity:1; }
 #fin-titulo{ font-family:var(--fuente-pixel); font-size:28px; letter-spacing:3px; text-shadow:3px 3px 0 #000; }
 #fin-texto{ max-width:560px; font-size:21px; }
 #fin-stats{ color:var(--texto-apagado); font-size:19px; }

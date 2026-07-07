@@ -13,7 +13,9 @@ Abre `index.html` en cualquier navegador. No necesita servidor ni dependencias.
   puedes **charlar**, **observar su aspecto**, **pedir ver el dinero** y
   **regatear**... pero cada acción gasta su paciencia. Al final: vender o rechazar.
 - **Por la noche** llega el resumen del día y los gastos: comida, alquiler y el
-  plazo de la deuda. Si no puedes pagar, estás acabado.
+  plazo de la deuda. Lo que sobre se amortiza automáticamente contra la deuda
+  (guardándote un colchón para el material de mañana). Si no puedes pagar,
+  estás acabado.
 
 ## A quién debes evitar
 

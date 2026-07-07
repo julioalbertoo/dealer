@@ -122,20 +122,20 @@ function generarRumores(malos, tellsDia) {
   const rumores = [];
 
   if (S.dia <= 3) {
-    presentes.forEach(t => rumores.push(tellsDia[t].rumor));
+    presentes.forEach(t => rumores.push(`${EMOJI_RUMOR[t]} ${tellsDia[t].rumor}`));
   } else if (S.dia <= 7) {
     const orden = barajar(presentes);
     orden.forEach((t, i) => {
-      if (i < 2) rumores.push(tellsDia[t].rumor);
-      else rumores.push(tellsDia[t].rumorVago);
+      if (i < 2) rumores.push(`${EMOJI_RUMOR[t]} ${tellsDia[t].rumor}`);
+      else rumores.push(`${EMOJI_RUMOR[t]} ${tellsDia[t].rumorVago}`);
     });
   } else {
     const orden = barajar(presentes).slice(0, 2);
-    orden.forEach(t => rumores.push(tellsDia[t].rumorVago));
+    orden.forEach(t => rumores.push(`${EMOJI_RUMOR[t]} ${tellsDia[t].rumorVago}`));
   }
 
   rumores.push(pick(RUMORES_RELLENO));
-  if (S.quemado) rumores.unshift('Tu punto está quemado: ayer le vendiste a la competencia. Hoy vendrá menos gente de fiar.');
+  if (S.quemado) rumores.unshift('🔥 Tu punto está quemado: ayer le vendiste a la competencia. Hoy vendrá menos gente de fiar.');
   return barajar(rumores);
 }
 
@@ -751,6 +751,8 @@ function irNoche() {
     gul.appendChild(li);
   });
 
+  const nota = $('#n-nota-deuda');
+
   if (S.dinero < totalGastos) {
     // no puedes pagar: ruina
     const li = document.createElement('li');
@@ -760,39 +762,42 @@ function irNoche() {
     $('#n-dinero').textContent = eur(S.dinero);
     $('#n-dinero').className = 'rojo';
     $('#n-deuda').textContent = eur(S.deuda);
-    $('#b-amortizar').classList.add('oculto');
+    nota.textContent = 'No llegas ni a cubrir los gastos. Se acabó.';
     $('#b-continuar').textContent = 'NO PUEDES PAGAR...';
     S.arruinado = true;
   } else {
     S.dinero -= totalGastos;
     S.deuda -= plazo;
+
+    // amortización automática: lo que sobra va directo a la deuda,
+    // guardando un colchón para el material de mañana (la última noche, todo)
+    const colchon = S.dia >= CFG.DIAS ? 0 : 80;
+    const amort = Math.min(S.deuda, Math.max(0, S.dinero - colchon));
+    if (amort > 0) {
+      S.dinero -= amort;
+      S.deuda -= amort;
+      const li = document.createElement('li');
+      li.className = 'amortizacion';
+      li.textContent = `Amortización automática de deuda: ${eur(amort)}`;
+      gul.appendChild(li);
+    }
+
+    if (S.deuda <= 0) {
+      nota.textContent = '✔ Deuda saldada con el proveedor. Lo que ganes ya es tuyo.';
+    } else if (amort > 0) {
+      nota.textContent = `Lo que sobra tras los gastos va directo al proveedor. Te guardas ${eur(colchon)} de colchón para el material de mañana.`;
+    } else {
+      nota.textContent = 'Hoy no ha sobrado nada para adelantar deuda.';
+    }
+
     $('#n-dinero').textContent = eur(S.dinero);
     $('#n-dinero').className = '';
     $('#n-deuda').textContent = eur(S.deuda);
-    $('#b-amortizar').classList.remove('oculto');
     $('#b-continuar').textContent = S.dia >= CFG.DIAS ? 'VER CÓMO ACABA →' : 'DORMIR →';
     S.arruinado = false;
   }
-  actualizarAmortizar();
+  nota.classList.toggle('verde', !S.arruinado && S.deuda <= 0);
   pantalla('#s-noche');
-}
-
-function actualizarAmortizar() {
-  const b = $('#b-amortizar');
-  if (S.arruinado) return;
-  const pago = Math.min(50, S.deuda);
-  b.disabled = !(S.deuda > 0 && S.dinero >= pago);
-  b.textContent = S.deuda > 0 ? `Amortizar ${eur(pago)} de deuda` : 'Deuda saldada ✔';
-}
-
-function clickAmortizar() {
-  const pago = Math.min(50, S.deuda);
-  if (S.dinero < pago || pago <= 0) return;
-  S.dinero -= pago;
-  S.deuda -= pago;
-  $('#n-dinero').textContent = eur(S.dinero);
-  $('#n-deuda').textContent = eur(S.deuda);
-  actualizarAmortizar();
 }
 
 function clickContinuar() {
@@ -846,8 +851,16 @@ function mostrarRecord() {
    ARRANQUE Y EVENTOS
    ============================================================ */
 function empezar() {
+  Musica.encender();   // el clic en EMPEZAR es el gesto que desbloquea el audio
+  pintarBotonMusica();
   nuevaPartida();
   irManana();
+}
+
+function pintarBotonMusica() {
+  const b = $('#b-musica');
+  b.textContent = Musica.activa() ? '🔊' : '🔇';
+  b.title = Musica.activa() ? 'Silenciar el techno' : 'Poner el techno';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -867,6 +880,10 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#b-cerrar-pasta').addEventListener('click', cerrarPasta);
 
   $('#b-siguiente').addEventListener('click', clickSiguiente);
-  $('#b-amortizar').addEventListener('click', clickAmortizar);
   $('#b-continuar').addEventListener('click', clickContinuar);
+
+  $('#b-musica').addEventListener('click', () => {
+    Musica.alternar();
+    pintarBotonMusica();
+  });
 });

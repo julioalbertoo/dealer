@@ -203,13 +203,22 @@ const FRASES_PROVEEDOR = [
   '«El precio sube, la vida sube, todo sube. No me mires así.»'
 ];
 
+/* emoji que acompaña al rumor según el tipo del que avisa */
+const EMOJI_RUMOR = {
+  poli: '🚔',
+  moroso: '💸',
+  yonki: '💉',
+  ladron: '🔪',
+  rival: '🐍'
+};
+
 /* rumores de relleno (ambiente, no dan pistas) */
 const RUMORES_RELLENO = [
-  'Van a poner una feria en el descampado. Más gente, más ruido, más de todo.',
-  'La del quiosco dice que este año el verano viene largo.',
-  'El Ayuntamiento quiere poner cámaras en el parque... llevan años diciéndolo.',
-  'Dicen que el bar de Paco vuelve a abrir. Ya era hora.',
-  'Ha vuelto el rumano del acordeón. Prepárate para oír «Despacito» ocho horas.'
+  '🎡 Van a poner una feria en el descampado. Más gente, más ruido, más de todo.',
+  '☀️ La del quiosco dice que este año el verano viene largo.',
+  '📹 El Ayuntamiento quiere poner cámaras en el parque... llevan años diciéndolo.',
+  '🍻 Dicen que el bar de Paco vuelve a abrir. Ya era hora.',
+  '🎶 Ha vuelto el rumano del acordeón. Prepárate para oír «Despacito» ocho horas.'
 ];
 
 /* resultado de las ventas, textos */
