@@ -65,6 +65,7 @@ body{
 /* ============ botones ============ */
 .boton{
   font-family:inherit;
+  touch-action:manipulation; /* iOS: toque inmediato, sin esperar doble tap */
   font-size:20px;
   color:var(--texto);
   background:var(--panel2);

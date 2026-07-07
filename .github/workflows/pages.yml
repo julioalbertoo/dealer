@@ -22,9 +22,12 @@ jobs:
           V="v1.$(git rev-list --count HEAD)"
           echo "Versión publicada: $V"
           printf "const VERSION = '%s';\n" "$V" > js/version.js
+          # cache-busting: cada publicación cambia la URL de css/js para
+          # que Safari/Pages no sirvan ficheros viejos de la caché
+          sed -i "s|href=\"style.css\"|href=\"style.css?$V\"|; s|src=\"js/\([a-z]*\)\.js\"|src=\"js/\1.js?$V\"|g" index.html
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add js/version.js
+          git add js/version.js index.html
           git commit -m "Publicar $V"
       - name: Publicar en gh-pages
         run: git push origin HEAD:gh-pages --force
