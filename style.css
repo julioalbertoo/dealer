@@ -827,10 +827,20 @@ body{
 /* ============ responsive ============ */
 @media (max-width:640px){
   .titulo-logo{ font-size:26px; letter-spacing:2px; }
-  #barra{ font-size:16px; flex-wrap:wrap; }
   #cliente-zona{ right:8%; transform:scale(.85); transform-origin:bottom; }
   .banco{ transform:scale(.8); transform-origin:bottom left; }
-  #dialogo{ height:100px; }
   #flash-poli{ font-size:20px; }
   .badge-subida{ right:10px; }
+
+  /* parque compacto: que quepa todo sin scroll en un móvil */
+  #barra{ font-size:15px; flex-wrap:wrap; gap:4px; padding:5px 8px; }
+  #barra span{ padding:1px 6px; }
+  #escena{ min-height:150px; }
+  #panel{ padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px)); gap:6px; }
+  #ficha{ font-size:17px; gap:12px; }
+  #dialogo{ height:88px; font-size:17px; padding:6px 10px; }
+  #acciones{ gap:6px; }
+  #acciones .boton{ font-size:17px; padding:5px 8px; }
+  #post-cliente .boton{ font-size:20px; padding:8px 18px; }
+  #pie-version{ font-size:11px; }
 }
