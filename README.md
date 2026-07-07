@@ -1,9 +1,9 @@
 # TRAPICHEO
 
+### ▶ Juega aquí: [julioalbertoo.github.io/dealer](https://julioalbertoo.github.io/dealer/)
+
 Juego en HTML inspirado en *Papers, Please*: eres un dealer en un banco de parque
 y debes saldar una deuda de 500 € con tu proveedor en **10 días**.
-
-**Juega aquí:** https://julioalbertoo.github.io/dealer/
 
 No necesita servidor ni dependencias: también puedes abrir `index.html`
 directamente en cualquier navegador.
