@@ -34,6 +34,7 @@ body{
   position:relative;
   max-width:960px;
   height:100vh;
+  height:100dvh; /* iOS Safari: no cuenta la zona tapada por la barra */
   margin:0 auto;
   border-left:4px solid #000;
   border-right:4px solid #000;
@@ -55,7 +56,11 @@ body{
 
 /* ============ pantallas ============ */
 .pantalla{ display:none; height:100%; }
-.pantalla.activa{ display:flex; flex-direction:column; }
+.pantalla.activa{
+  display:flex; flex-direction:column;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
 
 /* ============ botones ============ */
 .boton{
@@ -89,11 +94,13 @@ body{
 .boton.rechazar:hover:not(:disabled){ background:#75392f; color:#fff; }
 
 /* ============ título ============ */
-#s-titulo{ align-items:center; justify-content:center; }
+#s-titulo{ align-items:center; }
 .titulo-caja{
   text-align:center;
   max-width:640px;
-  padding:32px;
+  /* margen auto: centra en vertical pero deja hacer scroll si no cabe */
+  margin:auto 0;
+  padding:32px 32px calc(56px + env(safe-area-inset-bottom, 0px));
   display:flex; flex-direction:column; gap:18px; align-items:center;
 }
 .titulo-logo{
@@ -115,11 +122,12 @@ body{
 .titulo-record{ color:var(--texto-apagado); font-size:17px; }
 
 /* ============ mañana / noche / final ============ */
-#s-manana, #s-noche, #s-final{ align-items:center; justify-content:center; overflow-y:auto; }
+#s-manana, #s-noche, #s-final{ align-items:center; }
 .panel-manana, .panel-noche, .panel-final{
   width:min(680px, 92%);
   display:flex; flex-direction:column; gap:16px;
-  padding:24px 0;
+  margin:auto 0;
+  padding:24px 0 calc(56px + env(safe-area-inset-bottom, 0px));
 }
 .panel-final{ text-align:center; align-items:center; gap:22px; }
 .cabecera-dia{
@@ -167,7 +175,7 @@ body{
 /* pie de versión */
 #pie-version{
   position:absolute;
-  bottom:2px; left:8px;
+  bottom:calc(2px + env(safe-area-inset-bottom, 0px)); left:8px;
   z-index:60;
   font-size:14px;
   color:var(--texto-apagado);
@@ -681,7 +689,7 @@ body{
   flex:0 0 auto;
   background:var(--panel);
   border-top:4px solid #000;
-  padding:10px 14px 14px;
+  padding:10px 14px calc(28px + env(safe-area-inset-bottom, 0px));
   display:flex; flex-direction:column; gap:8px;
   z-index:5;
 }
