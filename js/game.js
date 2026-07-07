@@ -562,9 +562,24 @@ function renderPasta(info) {
   $('#pasta-desc').textContent = info.desc;
 }
 
+/* ---------- animación de intercambio: dinero y dosis ---------- */
+let intercambioTimer = null;
+function animarIntercambio(conBillete = true) {
+  const cont = $('#intercambio');
+  clearTimeout(intercambioTimer);
+  cont.querySelector('.vuela-billete').classList.toggle('oculto', !conBillete);
+  // ocultar y volver a mostrar reinicia las animaciones CSS
+  cont.classList.add('oculto');
+  void cont.offsetWidth;
+  cont.classList.remove('oculto');
+  intercambioTimer = setTimeout(() => cont.classList.add('oculto'), 1250);
+}
+
 /* ---------- resolución: vender / rechazar ---------- */
 function accVender() {
   setAcciones(false);
+  let trato = false;        // hubo intercambio de mano a mano
+  let tratoConBillete = true;
 
   switch (C.tipo) {
     case 'normal': {
@@ -572,6 +587,7 @@ function accVender() {
       S.dinero += C.precio;
       D.ganado += C.precio;
       S.totalVendido++;
+      trato = true;
       narrar(pick(TEXTOS.ventaOk), 'bueno');
       registrar(`Venta a ${C.nombre}: +${eur(C.precio)}`, 'ingreso');
       break;
@@ -579,6 +595,8 @@ function accVender() {
     case 'moroso': {
       S.stock--;
       D.perdido += costeDosis(S.dia);
+      trato = true;
+      tratoConBillete = C.tell.id !== 'fiado'; // al fiado no le ves un billete
       if (C.tell.id === 'fiado') {
         narrar('Le fías la dosis. Te jura que mañana te paga el doble. No lo volverás a ver en tu vida.', 'malo');
         registrar(`${C.nombre} se llevó una dosis de fiado (era un moroso): 0 €`, 'gasto');
@@ -593,6 +611,7 @@ function accVender() {
       const paga = Math.floor(C.precio / 2);
       S.dinero += paga;
       D.ganado += paga;
+      trato = true;
       narrar(`Rebusca por todos los bolsillos y solo junta ${eur(paga)}. Lo coges por no montar numerito.`, 'aviso');
       registrar(`Venta a ${C.nombre} (yonki), pagó corto: +${eur(paga)}`, 'ingreso');
       if (S.stock > 0 && Math.random() < 0.4) {
@@ -617,6 +636,7 @@ function accVender() {
       S.dinero += C.precio;
       D.ganado += C.precio;
       S.quemadoManana = true;
+      trato = true;
       narrar('Paga sin rechistar y se va sonriendo... demasiado interesado en tu esquina. Mal asunto.', 'aviso');
       registrar(`Venta a ${C.nombre}: +${eur(C.precio)} · era un DEALER RIVAL, tu punto queda quemado`, 'gasto');
       break;
@@ -627,8 +647,14 @@ function accVender() {
     }
   }
   actualizarBarra();
-  irseSprite();
-  mostrarSiguiente();
+  if (trato) {
+    // el billete y la dosis cruzan el aire antes de que el cliente se vaya
+    animarIntercambio(tratoConBillete);
+    setTimeout(() => { irseSprite(); mostrarSiguiente(); }, 1050);
+  } else {
+    irseSprite();
+    mostrarSiguiente();
+  }
 }
 
 function accRechazar() {

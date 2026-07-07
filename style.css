@@ -685,6 +685,54 @@ body{
 }
 .sprite.palido{ --piel:#c9b7a4; }
 
+/* ============ animación de intercambio: dinero y dosis ============ */
+#intercambio{
+  --x-tu:16%;        /* mano del dealer, en el banco */
+  --x-cliente:68%;   /* mano del cliente */
+  position:absolute; inset:0;
+  pointer-events:none;
+  z-index:4;
+}
+.vuela{ position:absolute; bottom:34%; opacity:0; }
+.vuela-billete{
+  width:36px; height:20px;
+  background:linear-gradient(180deg, rgba(255,255,255,.3), transparent 55%), #8fa3bd;
+  border:2px solid #2c3a52;
+  box-shadow:2px 2px 0 rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:bold; color:#1e2836;
+  animation:vuelo-billete 1s ease-in-out forwards;
+}
+.vuela-billete::after{ content:"€"; }
+.vuela-dosis{
+  width:17px; height:22px;
+  background:linear-gradient(rgba(255,255,255,.12) 0 55%, rgba(245,245,240,.85) 55%);
+  border:2px solid rgba(230,235,240,.75);
+  border-radius:2px 2px 5px 5px;
+  box-shadow:2px 2px 0 rgba(0,0,0,.3);
+  animation:vuelo-dosis 1s .1s ease-in-out forwards;
+}
+.vuela-dosis::before{ /* cierre zip de la bolsita */
+  content:""; position:absolute; top:2px; left:1px; right:1px; height:2px;
+  background:var(--acento);
+}
+/* el billete vuela del cliente al dealer... */
+@keyframes vuelo-billete{
+  0%{ left:var(--x-cliente); transform:translateY(0) rotate(0deg); opacity:0; }
+  12%{ opacity:1; }
+  50%{ transform:translateY(-56px) rotate(-180deg); }
+  88%{ opacity:1; }
+  100%{ left:var(--x-tu); transform:translateY(0) rotate(-360deg); opacity:0; }
+}
+/* ...y la dosis cruza en sentido contrario, un poco más alto */
+@keyframes vuelo-dosis{
+  0%{ left:var(--x-tu); transform:translateY(0) rotate(0deg); opacity:0; }
+  12%{ opacity:1; }
+  50%{ transform:translateY(-72px) rotate(180deg); }
+  88%{ opacity:1; }
+  100%{ left:var(--x-cliente); transform:translateY(0) rotate(360deg); opacity:0; }
+}
+
 /* ============ parque: panel inferior ============ */
 #panel{
   flex:0 0 auto;
@@ -829,6 +877,7 @@ body{
   .titulo-logo{ font-size:26px; letter-spacing:2px; }
   #cliente-zona{ right:8%; transform:scale(.85); transform-origin:bottom; }
   .banco{ transform:scale(.8); transform-origin:bottom left; }
+  #intercambio{ --x-tu:22%; --x-cliente:70%; }
   #flash-poli{ font-size:20px; }
   .badge-subida{ right:10px; }
 
