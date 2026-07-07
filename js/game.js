@@ -865,6 +865,8 @@ function pintarBotonMusica() {
 
 document.addEventListener('DOMContentLoaded', () => {
   mostrarRecord();
+  $('#pie-version').textContent =
+    `TRAPICHEO ${typeof VERSION !== 'undefined' ? VERSION : ''}`.trim();
 
   $('#b-empezar').addEventListener('click', empezar);
   $('#b-reiniciar').addEventListener('click', () => { mostrarRecord(); empezar(); });

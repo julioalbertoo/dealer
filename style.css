@@ -164,6 +164,18 @@ body{
 .nota-compra{ color:var(--texto-apagado); font-size:18px; font-style:italic; }
 #b-salir-parque, #b-continuar{ align-self:center; }
 
+/* pie de versión */
+#pie-version{
+  position:absolute;
+  bottom:2px; left:8px;
+  z-index:60;
+  font-size:14px;
+  color:var(--texto-apagado);
+  opacity:.6;
+  pointer-events:none;
+  letter-spacing:1px;
+}
+
 /* botón de música flotante */
 #b-musica{
   position:absolute;
